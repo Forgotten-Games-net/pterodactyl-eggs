@@ -1,0 +1,77 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1",
+        "update_url": null
+    },
+    "exported_at": "2022-02-17T12:45:46+01:00",
+    "name": "Call of Duty 2",
+    "author": "fistwho@forgotten-games.net",
+    "description": "Call of Duty 2 - Multiplayer Server",
+    "features": null,
+    "images": [
+        "keinnerd\/pt-idtech-baseimage:latest"
+    ],
+    "file_denylist": [],
+    "startup": "LD_PRELOAD=\"libs\/libcod2_{{LIBCOD}}.so\" .\/cod2_lnxded_{{SERVER_VERSION}} +set dedicated 2 +set fs_game {{SERVER_GAME}} +set net_port {{SERVER_PORT}} +exec {{SERVER_CONFIG}} +set sv_maxclients {{SERVER_PLAYER}} +set sv_cracked 1 +map_rotate",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Common Initialization Complete\",\r\n    \"userInteraction\": []\r\n}",
+        "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"\/home\/container\/.callofduty2\/main\/games_mp.log\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "## install required packages and update the system\r\napt update\r\napt upgrade -y\r\napt install curl tar bzip2 -y\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nDOWNLOAD_LINK=https:\/\/dl.forgotten-games.net\/cod\/cod2_lnxded.tar.gz\r\n\r\n## download files\r\necho -e \"Download Call of Duty Server Bundle\"\r\necho -e \"This can take some minutes so just wait\"\r\ncurl -sSL -o cod2_lnxded.tar.gz ${DOWNLOAD_LINK}\r\n \r\n## unpack files\r\necho -e \"Unpacking files\"\r\ntar xzvf cod2_lnxded.tar.gz\r\nrm cod2_lnxded.tar.gz\r\n\r\necho -e \"Install complete! Have fun!\"",
+            "container": "ghcr.io\/parkervcp\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Server Version",
+            "description": "Change the Server Version. Custom server binary naming explanations @ https:\/\/fog.gs",
+            "env_variable": "SERVER_VERSION",
+            "default_value": "1_3",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string||in:1_0a,1_0a_va,1_0a_va_loc,1_2c,1_2c_nodelay,1_2c_nodelay_va_loc,1_2c_patch_va_loc,1_3,1_3_cracked,1_3_nodelay,1_3_nodelay_va_loc,1_3_patch_va_loc"
+        },
+        {
+            "name": "Game Mod",
+            "description": "If you want to play a Modification, change it to the name of the mod folder.",
+            "env_variable": "SERVER_GAME",
+            "default_value": "main",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:10"
+        },
+        {
+            "name": "Config File",
+            "description": "The name of the config file for your server.",
+            "env_variable": "SERVER_CONFIG",
+            "default_value": "dedicated.cfg",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20"
+        },
+        {
+            "name": "Player Slots",
+            "description": "Maximal Player who can connect to the Server (max 32)",
+            "env_variable": "SERVER_PLAYER",
+            "default_value": "16",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric"
+        },
+        {
+            "name": "LibCOD",
+            "description": "LibCOD is a serverside extension that fix some functions. Adjust it to the Version you play!",
+            "env_variable": "LIBCOD",
+            "default_value": "1_3",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|in:1_3,1_2,1_0"
+        }
+    ]
+}
