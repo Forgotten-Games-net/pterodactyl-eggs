@@ -1,0 +1,50 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1",
+        "update_url": null
+    },
+    "exported_at": "2022-03-13T15:44:14+01:00",
+    "name": "Call of Duty - WaW",
+    "author": "fistwho@forgotten-games.net",
+    "description": "Call of Duty 5: World at War",
+    "features": null,
+    "images": [
+        "keinnerd\/pt-iwengine-baseimage:latest"
+    ],
+    "file_denylist": [],
+    "startup": ".\/codwaw_lnxded-bin +set dedicated 2 {{SERVER_GAME}} +set net_ip 0.0.0.0 +set net_port \"{{SERVER_PORT}}\" +set fs_basepath \"{{GAME_FILE_PATH}}\" +set fs_homepath . +exec server.cfg +set sv_maxclients \"{{MAX_PLAYERS}}\"  +map_rotate",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Session creation complete!\",\r\n    \"userInteraction\": []\r\n}",
+        "logs": "{}",
+        "stop": "quit"
+    },
+    "scripts": {
+        "installation": {
+            "script": "## install required packages and update the system\r\napt update\r\napt upgrade -y\r\napt install curl tar bzip2 -y\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nDOWNLOAD_LINK=https:\/\/dl.forgotten-games.net\/cod\/codwaw_lnxded.tar.gz\r\n\r\n## download files\r\necho -e \"Download Call of Duty 5 Server Bundle\"\r\necho -e \"This can take some minutes so just wait\"\r\ncurl -sSL -o codwaw_lnxded.tar.gz ${DOWNLOAD_LINK}\r\n \r\n## unpack files\r\necho -e \"Unpacking files\"\r\ntar xzvf codwaw_lnxded.tar.gz\r\nrm codwaw_lnxded.tar.gz\r\n\r\necho -e \"Install complete! Have fun!\"",
+            "container": "ghcr.io\/parkervcp\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Max Players",
+            "description": "Maximal Slots on this Server",
+            "env_variable": "MAX_PLAYERS",
+            "default_value": "32",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric"
+        },
+        {
+            "name": "Game Mode",
+            "description": "Change only if you use mods (add `+set fs_game mods\/YourMod` as Value)",
+            "env_variable": "SERVER_GAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "max:20"
+        }
+    ]
+}

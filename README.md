@@ -7,8 +7,10 @@ All these Eggs are testet on the [Forgotten-Games.net](https://forgotten-games.n
 
 ### Call of Duty - Franchise 
  - [x] Call of Duty 1
- - [x] Call of Duty - United Offensive
- - [x] Call of Duty 2
+ - [x] Call of Duty 1 - United Offensive
+ - [x] Call of Duty 2 incl. LibCOD
+ - [x] Call of Duty 4 incl. COD4x
+ - [x] Call of Duty 5 - World at War
 
 ## Upcoming Games
 
